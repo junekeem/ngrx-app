@@ -6,6 +6,7 @@ import { HomeComponent } from './home/home.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { StoreModule } from "@ngrx/store";
 import { AppRoutingModule } from "./app-routing.module";
+import { StoreDevtoolsModule } from "@ngrx/store-devtools";
 
 @NgModule({
   declarations: [
@@ -16,6 +17,7 @@ import { AppRoutingModule } from "./app-routing.module";
   imports: [
     BrowserModule,
     StoreModule.forRoot({}),
+    StoreDevtoolsModule.instrument(),
     AppRoutingModule
   ],
   providers: [],
