@@ -6,6 +6,8 @@ import { CustomerEditComponent } from './customer-edit/customer-edit.component';
 import { CustomerListComponent } from './customer-list/customer-list.component';
 import { RouterModule, Routes } from "@angular/router";
 import { ReactiveFormsModule } from "@angular/forms";
+import { StoreModule } from "@ngrx/store";
+import { customerReducer } from "./state/customer.reducer";
 
 const routes: Routes = [
   {
@@ -24,6 +26,7 @@ const routes: Routes = [
   imports: [
     CommonModule,
     ReactiveFormsModule,
+    StoreModule.forFeature("customers", customerReducer),
     RouterModule.forChild(routes)
   ]
 })
