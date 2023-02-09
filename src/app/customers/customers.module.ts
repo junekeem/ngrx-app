@@ -8,6 +8,8 @@ import { RouterModule, Routes } from "@angular/router";
 import { ReactiveFormsModule } from "@angular/forms";
 import { StoreModule } from "@ngrx/store";
 import { customerReducer } from "./state/customer.reducer";
+import { EffectsModule } from "@ngrx/effects";
+import { CustomerEffects } from "./state/customer.effects";
 
 const routes: Routes = [
   {
@@ -27,6 +29,7 @@ const routes: Routes = [
     CommonModule,
     ReactiveFormsModule,
     StoreModule.forFeature("customers", customerReducer),
+    EffectsModule.forFeature([CustomerEffects]),
     RouterModule.forChild(routes)
   ]
 })

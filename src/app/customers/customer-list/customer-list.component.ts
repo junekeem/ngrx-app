@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { Store } from "@ngrx/store";
+import { Store, select } from "@ngrx/store";
 import { Customer } from "../customer.model";
+import * as customerActions from '../state/customer.actions'
+import * as fromCustomer from '../state/customer.reducer'
+import { Observable } from "rxjs";
 
 @Component({
   selector: 'app-customer-list',
@@ -9,15 +12,16 @@ import { Customer } from "../customer.model";
 })
 export class CustomerListComponent implements OnInit {
 
-  customers: Customer[] = [];
+  customers$: Observable<Customer[]>;
 
   constructor(
-    private store: Store<any>) {
+    private store: Store<fromCustomer.AppState>) {
   }
 
   ngOnInit() {
-    this.store.dispatch({ type: "LOAD_CUSTOMERS" });
-    this.store.subscribe(state => (this.customers = state.customers.customers))
+    this.store.dispatch(new customerActions.LoadCustomers());
+    // this.store.subscribe(state => (this.customers = state.customers.customers))
+    this.customers$ = this.store.pipe(select(fromCustomer.getCustomers));
   }
 
 }
