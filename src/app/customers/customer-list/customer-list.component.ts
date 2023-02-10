@@ -19,8 +19,7 @@ export class CustomerListComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.store.dispatch(new customerActions.LoadCustomers());
-    // this.store.subscribe(state => (this.customers = state.customers.customers))
+    this.store.dispatch(customerActions.loadCustomers());
     this.customers$ = this.store.pipe(select(fromCustomer.getCustomers));
   }
 

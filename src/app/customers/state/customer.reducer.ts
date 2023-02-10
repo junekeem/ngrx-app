@@ -1,7 +1,7 @@
 import * as customerActions from './customer.actions';
 import { Customer } from "../customer.model";
 import * as fromRoot from '../../state/app-state';
-import { createFeatureSelector, createSelector } from "@ngrx/store";
+import { createFeatureSelector, createReducer, createSelector, on, union } from "@ngrx/store";
 
 export interface CustomerState {
   customers: Customer[],
@@ -21,36 +21,15 @@ const initialState: CustomerState = {
   error: ''
 }
 
-export function customerReducer(state = initialState, action: customerActions.LoadAction): CustomerState {
-  switch (action.type) {
-    case customerActions.CustomerActionTypes.LOAD_CUSTOMERS: {
-      return {
-        ...state,
-        loading: true
-      }
-    }
-    case customerActions.CustomerActionTypes.LOAD_CUSTOMERS_SUCCESS: {
-      return {
-        ...state,
-        customers: action.payload,
-        loading: false,
-        loaded: true
-      }
-    }
-    case customerActions.CustomerActionTypes.LOAD_CUSTOMERS_FAIL: {
-      return {
-        ...state,
-        customers: [],
-        loading: false,
-        loaded: true,
-        error: action.payload
-      }
-    }
-    default: {
-      return state;
-    }
-  }
-}
+export const customerReducer = createReducer(
+  initialState,
+  on(customerActions.loadCustomers,
+    (state) => ({ ...state, loading: true })),
+  on(customerActions.loadCustomersSuccess,
+    (state, { payload }) => ({ ...state, customers: payload.customers, loading: false, loaded: true })),
+  on(customerActions.loadCustomersFail,
+    (state, { payload }) => ({ ...state, customers: [], loading: false, loaded: true, error: payload.error }))
+);
 
 const getCustomerFeatureState = createFeatureSelector<CustomerState>(
   "customers"
