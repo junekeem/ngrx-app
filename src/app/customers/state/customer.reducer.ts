@@ -36,7 +36,31 @@ export const customerReducer = createReducer(
     (state, { payload: { customers } }) =>
       customerAdapter.setAll(customers, { ...state, loading: false, loaded: true })),
   on(customerActions.loadCustomersFail,
-    (state, { payload: { error } }) => ({ ...state, entities: {}, loading: false, loaded: true, error }))
+    (state, { payload: { error } }) => ({ ...state, entities: {}, loading: false, loaded: true, error })),
+
+  on(customerActions.loadCustomerSuccess,
+    (state, { payload: { customer } }) =>
+      customerAdapter.addOne(customer, { ...state, selectedCustomerId: customer.id! })),
+  on(customerActions.loadCustomerFail,
+    (state, { error }) => ({ ...state, error })),
+
+  on(customerActions.createCustomerSuccess,
+    (state, { payload: { customer } }) =>
+      customerAdapter.addOne(customer, { ...state })),
+  on(customerActions.createCustomerFail,
+    (state, { error }) => ({ ...state, error })),
+
+  on(customerActions.updateCustomerSuccess,
+    (state, { payload: { customer } }) =>
+      customerAdapter.updateOne(customer, { ...state })),
+  on(customerActions.updateCustomerFail,
+    (state, { error }) => ({ ...state, error })),
+
+  on(customerActions.deleteCustomerSuccess,
+    (state, { payload: { id } }) =>
+      customerAdapter.removeOne(id, { ...state })),
+  on(customerActions.deleteCustomerFail,
+    (state, { error }) => ({ ...state, error }))
 );
 
 const getCustomerFeatureState = createFeatureSelector<CustomerState>(
@@ -61,4 +85,14 @@ export const getCustomersLoaded = createSelector(
 export const getError = createSelector(
   getCustomerFeatureState,
   (state: CustomerState) => state.error
+)
+
+export const getCurrentCustomerId = createSelector(
+  getCustomerFeatureState,
+  (state: CustomerState) => state.selectedCustomerId
+)
+
+export const getCurrentCustomer = createSelector(
+  getCustomerFeatureState,
+  (state: CustomerState) => state.entities[state.selectedCustomerId!]
 )
