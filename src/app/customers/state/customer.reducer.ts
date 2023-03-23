@@ -1,8 +1,9 @@
 import * as customerActions from './customer.actions';
 import { Customer } from "../customer.model";
 import * as fromRoot from '../../state/app-state';
-import { createFeatureSelector, createReducer, createSelector, on, union } from "@ngrx/store";
+import { ActionReducerMap, createFeatureSelector, createReducer, createSelector, on, union } from "@ngrx/store";
 import { createEntityAdapter, EntityAdapter, EntityState } from "@ngrx/entity";
+import { routerReducer, RouterReducerState } from "@ngrx/router-store";
 
 export interface CustomerState extends EntityState<Customer> {
   selectedCustomerId: number | null,
@@ -96,3 +97,13 @@ export const getCurrentCustomer = createSelector(
   getCustomerFeatureState,
   (state: CustomerState) => state.entities[state.selectedCustomerId!]
 )
+
+export interface State {
+  router: RouterReducerState<any>;
+}
+
+export const reducers: ActionReducerMap<State> = {
+  router: routerReducer
+};
+
+

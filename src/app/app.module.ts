@@ -9,6 +9,10 @@ import { AppRoutingModule } from "./app-routing.module";
 import { StoreDevtoolsModule } from "@ngrx/store-devtools";
 import { EffectsModule } from "@ngrx/effects";
 import { HttpClientModule } from "@angular/common/http";
+import { CustomSerializer } from "./shared/utils";
+import { StoreRouterConnectingModule } from "@ngrx/router-store";
+import { RouterModule } from "@angular/router";
+import { reducers } from "./customers/state/customer.reducer";
 
 @NgModule({
   declarations: [
@@ -18,11 +22,17 @@ import { HttpClientModule } from "@angular/common/http";
   ],
   imports: [
     BrowserModule,
-    StoreModule.forRoot({}),
+    StoreModule.forRoot(reducers),
     StoreDevtoolsModule.instrument(),
     EffectsModule.forRoot([]),
     HttpClientModule,
-    AppRoutingModule
+    AppRoutingModule,
+    RouterModule.forRoot([
+      // routes
+    ]),
+    StoreRouterConnectingModule.forRoot({
+      serializer: CustomSerializer
+    })
   ],
   providers: [],
   bootstrap: [AppComponent]
